@@ -3,10 +3,13 @@ include ../py/mkenv.mk
 # qstr definitions (must come before including py.mk)
 QSTR_DEFS = qstrdefsport.h #$(BUILD)/pins_qstr.h
 
-MICROPY_PY_USSL = 1
-MICROPY_SSL_AXTLS = 1
+#CH Omitted SSL and TLS library implementations, as per https://github.com/micropython/micropython/issues/2475
+MICROPY_PY_USSL = 0
+MICROPY_SSL_AXTLS = 0
+#CH Removed VFAT filesystem as all code is frozen modules
 MICROPY_FATFS = 1
-MICROPY_PY_BTREE = 1
+#CH Removed Berkeley Tree Database to save space following https://github.com/micropython/micropython/issues/2700#issuecomment-268033969
+MICROPY_PY_BTREE = 0
 
 FROZEN_DIR = scripts
 FROZEN_MPY_DIR = modules
