@@ -163,7 +163,9 @@ STATIC mp_obj_t esp_flash_user_start(void) {
     if (IS_OTA_FIRMWARE()) {
         return MP_OBJ_NEW_SMALL_INT(0x3c000 + 0x90000);
     } else {
-        return MP_OBJ_NEW_SMALL_INT(0x90000);
+		//CH Changed following https://github.com/micropython/micropython/issues/2700#issuecomment-287737238
+		//Possibly could go as large as 0xc0000 following http://wiki.serafim.eti.br/ht-txt:esp-too-big-irom0
+        return MP_OBJ_NEW_SMALL_INT(0xc0000);
     }
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(esp_flash_user_start_obj, esp_flash_user_start);
