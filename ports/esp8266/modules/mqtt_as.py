@@ -19,8 +19,8 @@ gc.collect()
 from sys import platform
 
 # Default short delay for good SynCom throughput (avoid sleep(0) with SynCom).
-_DEFAULT_MS = const(20)
-_SOCKET_POLL_DELAY = const(5)  # 100ms added greatly to publish latency
+_DEFAULT_MS = const(1)
+_SOCKET_POLL_DELAY = const(0)  # 100ms added greatly to publish latency
 
 # Legitimate errors while waiting on a socket. See uasyncio __init__.py open_connection().
 BUSY_ERRORS = [EINPROGRESS, ETIMEDOUT]
