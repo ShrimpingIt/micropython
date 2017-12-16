@@ -77,15 +77,15 @@ def putFile(frompath, topath):
 
 gitFolder = os.path.realpath("../")
 retrotextualFolder = os.path.realpath(gitFolder + "/retrotextual/code/cockle")
-mainFile = os.path.realpath(retrotextualFolder + "/main.py")
+mainFile = os.path.realpath(retrotextualFolder + "/mqttlights.py")
 configFile = os.path.realpath(retrotextualFolder + "/config.py")
 neopixelFile = os.path.realpath("/home/cefn/Developer/git/ws2812-SPI/neoSPI.py")
 
-eraseCommand = "esptool.py --port /dev/ttyUSB0 erase_flash"
+eraseCommand = "esptool.py --port {port} erase_flash".format(**hardware_config())
 # D1 Mini
-# flashCommand = "esptool.py --port /dev/ttyUSB0 --baud 1500000 write_flash --flash_size=32m 0 build/firmware-combined.bin"
+# flashCommand = "esptool.py --port {port} --baud 1500000 write_flash --flash_size=32m 0 build/firmware-combined.bin".format(**hardware_config())
 # NodeMCU
-flashCommand = "esptool.py --port /dev/ttyUSB0 --baud 1500000 write_flash --flash_mode dio --flash_size=32m 0 ports/esp8266/build/firmware-combined.bin"
+flashCommand = "esptool.py --port {port} --baud 1500000 write_flash --flash_mode dio --flash_size=32m 0 ports/esp8266/build/firmware-combined.bin".format(**hardware_config())
 
 def configureBoard(boardId):
 	input("Ready to flash board {} : Press Enter".format(boardId))
@@ -101,12 +101,18 @@ def configureBoard(boardId):
 	
 	print("Uploading neopixel library to board {}...".format(boardId))
 	putFile(neopixelFile, 'neoSPI.py')
+	sleep(1)
 
 	print("Uploading config.py to board {}...".format(boardId))
+	# todo place final wifi ssid+pw in config.py on per-board basis
 	putFile(configFile, 'config.py')
+	sleep(1)
+
+	print("Specialising main.py for board {}...".format(boardId))
+	# todo modify to include for indentation and space with ^\s*
+	replaceall("characterIndex.*=.*$", "characterIndex = {}".format(boardId), mainFile)
 
 	print("Uploading main.py to board {}...".format(boardId))
-	replaceall("boardId.*=.*$", "boardId = '{}'".format(boardId), mainFile)
 	putFile(mainFile, 'main.py')
 
 if __name__ == "__main__":
