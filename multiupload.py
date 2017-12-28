@@ -77,15 +77,15 @@ def putFile(frompath, topath):
 
 gitFolder = os.path.realpath("../")
 retrotextualFolder = os.path.realpath(gitFolder + "/retrotextual/code/cockle")
-mainFile = os.path.realpath(retrotextualFolder + "/mqttlights.py")
+mainFile = os.path.realpath(retrotextualFolder + "/uartcharactertest.py")
 configFile = os.path.realpath(retrotextualFolder + "/config.py")
 neopixelFile = os.path.realpath("/home/cefn/Developer/git/ws2812-SPI/neoSPI.py")
 
 eraseCommand = "esptool.py --port {port} erase_flash".format(**hardware_config())
 # D1 Mini
-# flashCommand = "esptool.py --port {port} --baud 1500000 write_flash --flash_size=32m 0 build/firmware-combined.bin".format(**hardware_config())
+flashCommand = "esptool.py --port {port} --baud 1500000 write_flash --flash_size=32m 0 ports/esp8266/build/firmware-combined.bin".format(**hardware_config())
 # NodeMCU
-flashCommand = "esptool.py --port {port} --baud 1500000 write_flash --flash_mode dio --flash_size=32m 0 ports/esp8266/build/firmware-combined.bin".format(**hardware_config())
+#flashCommand = "esptool.py --port {port} --baud 1500000 write_flash --flash_mode dio --flash_size=32m 0 ports/esp8266/build/firmware-combined.bin".format(**hardware_config())
 
 def configureBoard(boardId):
 	input("Ready to flash board {} : Press Enter".format(boardId))
@@ -99,7 +99,7 @@ def configureBoard(boardId):
 	print("Waiting for board {}...".format(boardId))
 	sleep(4)
 	
-	print("Uploading neopixel library to board {}...".format(boardId))
+	print("Uploading (unused) neopixel library to board {}...".format(boardId))
 	putFile(neopixelFile, 'neoSPI.py')
 	sleep(1)
 
